@@ -37,6 +37,7 @@ function isLoggedIn(): bool {
 
 function requireLogin(): void {
     if (!isLoggedIn()) {
+        $_SESSION['login_redirect'] = $_SERVER['REQUEST_URI'] ?? '/';
         header('Location: account.php?action=login');
         exit;
     }

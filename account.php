@@ -17,7 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($formAction === 'login') {
         $result = loginUser($pdo, $_POST['email'] ?? '', $_POST['password'] ?? '');
-        if ($result['success']) { header('Location: account.php'); exit; }
+        if ($result['success']) {
+            $redirect = $_SESSION['login_redirect'] ?? 'account.php';
+            unset($_SESSION['login_redirect']);
+            header('Location: ' . $redirect);
+            exit;
+        }
         $error = $result['error'];
     } elseif ($formAction === 'register') {
         $result = registerUser($pdo, $_POST['name'] ?? '', $_POST['email'] ?? '', $_POST['password'] ?? '');
